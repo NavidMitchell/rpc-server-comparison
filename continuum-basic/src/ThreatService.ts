@@ -1,12 +1,6 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
+import axios, { AxiosInstance } from 'axios';
 import { Publish, Context } from '@kinotic/continuum-client';
-import { firstValueFrom } from 'rxjs';
-
-interface CustomerConfiguration {
-  customerId: string;
-  apiKey: string;
-}
+import { CustomerConfiguration } from './CustomerConfiguration';
 
 interface ThreatAssessment {
   status: 'Low' | 'Medium' | 'High';
@@ -18,21 +12,23 @@ interface ThreatAssessment {
   };
 }
 
-@Injectable()
 @Publish('com.example.threat')
 export class ThreatService {
-  constructor(private readonly httpService: HttpService) {}
+  private readonly httpClient: AxiosInstance;
 
-  public async checkThreat(
+  constructor() {
+    this.httpClient = axios.create({
+      baseURL: 'https://pulsedive.com/api/',
+    });
+  }
+
+  async checkThreat(
     threatLevel: number,
     indicator: string,
     @Context() config: CustomerConfiguration,
   ): Promise<ThreatAssessment> {
     if (threatLevel < 0 || threatLevel > 10) {
-      throw new HttpException(
-        'Threat level must be between 0 and 10',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new Error('Threat level must be between 0 and 10');
     }
 
     const status = threatLevel >= 7 ? 'High' : threatLevel >= 4 ? 'Medium' : 'Low';
@@ -40,14 +36,12 @@ export class ThreatService {
 
     let pulseDiveData: ThreatAssessment['pulseDiveData'];
     try {
-      const response = await firstValueFrom(
-        this.httpService.get('https://pulsedive.com/api/info.php', {
-          params: {
-            indicator,
-            key: pulseDiveApiKey,
-          },
-        }),
-      );
+      const response = await this.httpClient.get('info.php', {
+        params: {
+          indicator,
+          key: pulseDiveApiKey,
+        },
+      });
 
       const data = response.data;
       pulseDiveData = {
@@ -56,10 +50,7 @@ export class ThreatService {
         summary: data.summary || undefined,
       };
     } catch (error) {
-      throw new HttpException(
-        `Failed to fetch PulseDive data: ${error.message}`,
-        HttpStatus.SERVICE_UNAVAILABLE,
-      );
+      throw new Error(`Failed to fetch PulseDive data: ${JSON.stringify(error, null, 2)}`);
     }
 
     const details = `Threat assessed for customer ${config.customerId}: ${indicator} (PulseDive risk: ${pulseDiveData.risk})`;
