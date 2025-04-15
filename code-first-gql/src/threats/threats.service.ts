@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import { Threat } from './threats.model';
-import { CustomerConfiguration } from '../graphql.context';
+import { Threat } from './threats.model.js';
+import { CustomerConfiguration } from '../graphql.context.js';
 
 interface PulsediveResponse {
   risk: string;

@@ -1,7 +1,7 @@
 import { Resolver, Query, Args, Context } from '@nestjs/graphql';
-import { ThreatsService } from './threats.service';
-import { Threat } from './threats.model';
-import { CustomContext } from '../graphql.context';
+import { ThreatsService } from './threats.service.js';
+import { Threat } from './threats.model.js';
+import { CustomContext } from '../graphql.context.js';
 
 @Resolver(() => Threat)
 export class ThreatsResolver {

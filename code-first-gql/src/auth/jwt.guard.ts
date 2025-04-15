@@ -2,8 +2,8 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import * as jose from 'jose';
 import { FlattenedJWSInput, JSONWebKeySet, JWSHeaderParameters } from 'jose';
-import { ConfigService } from '../config/config.service';
-import { CustomContext } from '../graphql.context';
+import { ConfigService } from '../config/config.service.js';
+import { CustomContext } from '../graphql.context.js';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

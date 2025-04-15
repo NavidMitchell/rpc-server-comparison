@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CustomerConfiguration } from '../graphql.context';
+import { CustomerConfiguration } from '../graphql.context.js';
 
 @Injectable()
 export class ConfigService {
