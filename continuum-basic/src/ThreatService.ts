@@ -22,7 +22,7 @@ export class ThreatService {
     });
   }
 
-  async checkThreat(
+  public async checkThreat(
     threatLevel: number,
     indicator: string,
     @Context() config: CustomerConfiguration,
