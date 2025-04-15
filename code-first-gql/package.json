@@ -30,7 +30,9 @@
     "@nestjs/platform-express": "^11.0.1",
     "@types/jsonwebtoken": "^9.0.9",
     "axios": "^1.8.4",
+    "dotenv": "^16.5.0",
     "graphql": "^16.10.0",
+    "jose": "^6.0.10",
     "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"

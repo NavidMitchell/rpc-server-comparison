@@ -1,0 +1,8 @@
+type Threat {
+  indicator: String!
+  status: String!
+}
+
+type Query {
+  checkThreat(indicator: String!): Threat!
+}
