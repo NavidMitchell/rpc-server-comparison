@@ -1,4 +1,4 @@
 export interface CustomerConfiguration {
-  customerId: string;
-  apiKey: string;
+  customerId: string
+  apiKey: string
 }
